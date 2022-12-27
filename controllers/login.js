@@ -16,7 +16,17 @@ const connection= mongoose.connection
 const userSchema = new mongoose.Schema(
     { name: String, mobile: String, coupon:String }
 )
+
+const couponSchema = new mongoose.Schema(
+    {couponcode:String }
+)
 const User = mongoose.model('User', userSchema);
+const allCoupons = mongoose.model('allcoupons', couponSchema);
+const custome  = async (mobile, name, couponcode)=>{
+    console.log(mobile, name)
+    const user = await User.create({mobile:mobile,name:name,coupon:couponcode})
+     await user.save()
+} 
 
 const loginController = async(req, res)=>{
     const { coupon, mobile, name } = req.body;
@@ -24,14 +34,23 @@ const loginController = async(req, res)=>{
     newMob= '+91'+mobile
     console.log(newMob)
     console.log(req.body)
-   
-const user = await User.create({mobile:mobile,name:name})
-await user.save()
+    // coupon=coupon;
+    // mobile=mobile;
+    // name=name
 
-User.find({ coupon: coupon}, function (err, docs) {
+    
+// const user = await allCoupons.create({allcoupons:coupon})
+// await user.save()
+
+allCoupons.find({couponcode: coupon}, function (err, docs) {
     let couponLength = docs.length
- 
+      console.log(docs)
     if (docs.length>0){
+        custome( mobile, name,coupon)
+        // docs.coupon = coupon;
+        // docs.name= name;
+        // docs.mobile = mobile
+        
         client.verify.v2
         .services(verifySid)
         .verifications.create({ to: newMob, channel: "sms" })

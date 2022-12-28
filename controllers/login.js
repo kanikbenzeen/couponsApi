@@ -14,7 +14,7 @@ mongoose.connect(DB,{ useNewUrlParser: true, useUnifiedTopology: true }).then(()
 
 const connection= mongoose.connection
 const userSchema = new mongoose.Schema(
-    { name: String, mobile: String, coupon:String }
+    { name: String, mobile: String, coupon:String, discount:String, createdAt:{ type:Date, default:Date.now()} }
 )
 
 const couponSchema = new mongoose.Schema(
@@ -43,8 +43,12 @@ const loginController = async(req, res)=>{
 // await user.save()
 
 allCoupons.find({couponcode: coupon}, function (err, docs) {
+    
+
     let couponLength = docs.length
-      console.log(docs)
+    // let discounts=docs[0].discount
+    // console.log(docs._id)
+    // console.log(docs)
     if (docs.length>0){
         custome( mobile, name,coupon)
         // docs.coupon = coupon;

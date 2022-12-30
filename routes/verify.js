@@ -5,6 +5,4 @@ const verifyController = require('../controllers/verify')
 
 router.post('/', verifyController)
 
-
-
 module.exports = router
